@@ -1,0 +1,37 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      <h1>Danas</h1>
+      <p class="date"> {{today|date:'fullDate'}} </p>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list *ngFor="let putovanje of Putovanja">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          {{putovanje.Destinacija}}
+          <p>Datum od:{{putovanje.datumOd | date:'fullDate' }}</p>
+          <p>Datum do:{{putovanje.datumDO | date:'fullDate' }}</p>
+          <img [src]="putovanje.slika" alt="{{ putovanje.destinacija }}" style="width: 100%; height: auto;">
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-row>
+          <ion-button (click)="goToUpdatePage(putovanje)">
+            Update
+          </ion-button>
+          <ion-button>Delete</ion-button>
+        </ion-row>
+      </ion-card-content>
+
+    </ion-card>
+  </ion-list>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="goToAddPage()">
+      <ion-icon name="add">Add</ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

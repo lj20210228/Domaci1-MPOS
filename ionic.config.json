@@ -1,0 +1,7 @@
+{
+  "name": "Putovanja",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
