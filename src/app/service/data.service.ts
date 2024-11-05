@@ -33,7 +33,7 @@ export class DataService {
   updatePutovanje(putovanje: Putovanje) {
     const putovanjeRef = doc(this.firestore, `Putovanja/${putovanje.idPutovanja}`);
     return updateDoc(putovanjeRef, {
-      Destinacija: putovanje.destinacija,
+      destinacija: putovanje.destinacija,
       datumDO: putovanje.datumDO,
       datumOd: putovanje.datumOd,
       idPutovanja: putovanje.idPutovanja,

@@ -28,6 +28,19 @@ export class HomePage implements OnInit, OnDestroy {
   Putovanja: any;
   sub: Subscription = new Subscription;
   constructor(public modalCtrl: ModalController, private dataService: DataService) { }
+  isPastTrip(putovanje: any): boolean {
+    const now = new Date();
+    return putovanje.datumDO < now;
+  }
+
+  isFutureTrip(putovanje: any): boolean {
+    const now = new Date();
+    return putovanje.datumOd > now;
+  }
+  isCurrentTrip(putovanje: any): boolean {
+    const now = new Date();
+    return putovanje.datumOd <= now && putovanje.datumDO >= now;
+  }
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }

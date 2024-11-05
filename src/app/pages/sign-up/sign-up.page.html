@@ -1,0 +1,69 @@
+<ion-content [fullscreen]="true">
+  <div>
+    <h1 style="text-align: center;">Registruj se</h1>
+  </div>
+  <form [formGroup]="regForm" novalidate>
+    <div class="ion-padding">
+      <ion-item>
+        <ion-input formControlName="fullname" class="input" placeholder="Unesite ime i prezime">
+
+        </ion-input>
+        <ion-icon name="mail-outline">
+
+        </ion-icon>
+      </ion-item>
+      <br>
+      <div *ngIf="this.regForm.controls?.['fullname'].touched && this.regForm.controls?.['fullname'].invalid">
+        <ion-text *ngIf="regForm.controls['fullname'].hasError('required')">
+          Unesite ime i prezime!
+        </ion-text>
+      </div>
+
+      <ion-item>
+        <ion-input formControlName="email" class="input" placeholder="Unesite e-mail adresu">
+
+        </ion-input>
+        <ion-icon name="mail-outline">
+
+        </ion-icon>
+      </ion-item>
+
+      <div *ngIf="regForm.controls['email'].touched && regForm.controls['email'].invalid">
+        <ion-text *ngIf="regForm.controls['email'].hasError('required')">
+          Unesite email!
+        </ion-text>
+        <ion-text *ngIf="regForm.controls['email'].hasError('pattern')">
+          Email mora biti u odgovarajućem formatu!
+        </ion-text>
+      </div>
+      <br>
+      <ion-item>
+        <ion-input formControlName="password" class="input" placeholder="Unesite lozinku">
+
+        </ion-input>
+        <ion-icon name="lock-closed-outline">
+
+        </ion-icon>
+      </ion-item>
+      <div *ngIf="regForm.controls?.['password'].touched && regForm.controls?.['password'].invalid">
+        <ion-text *ngIf="regForm.controls['password'].hasError('required')">
+          Unesite lozinku!
+        </ion-text>
+        <ion-text *ngIf="regForm.controls['password'].hasError('pattern')">
+          Lozinka mora sadržati najmanje jedan broj, jedno veliko slovo i najmanje 8 karaktera.
+        </ion-text>
+      </div>
+      <br>
+      <div>
+        <p>Već ste korisnik?<a [routerLink]="['/login']">Ulogujte se</a></p>
+      </div>
+    </div>
+
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end" style="margin-bottom: 30px;">
+      <ion-fab-button (click)="signUp()">
+        <ion-icon name="chevron-forward"></ion-icon>
+      </ion-fab-button>
+
+    </ion-fab>
+  </form>
+</ion-content>

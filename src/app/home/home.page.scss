@@ -1,7 +1,5 @@
 #container {
-  text-align: center;
 
-  position: absolute;
   left: 0;
   right: 0;
   top: 50%;
@@ -24,4 +22,19 @@
 
 #container a {
   text-decoration: none;
+}
+
+.past-trip {
+  background-color: #f8d7da;
+  /* svetlocrvena za prošla putovanja */
+}
+
+.future-trip {
+  background-color: #d4edda;
+  /* svetlozelena za buduća putovanja */
+}
+
+.current-trip {
+  background-color: #d1ecf1;
+  /* svetloplava za trenutna putovanja */
 }

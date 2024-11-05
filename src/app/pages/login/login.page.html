@@ -1,0 +1,45 @@
+<ion-content [fullscreen]="true">
+  <div>
+    <h1 style="text-align: center;">Prijavi se</h1>
+  </div>
+  <form [formGroup]="loginForm" novalidate>
+    <div class="ion-padding">
+      <ion-item>
+        <ion-input formControlName="email" placeholder="Unesite e-mail adresu" class="input"></ion-input>
+        <ion-icon name="mail-outline"></ion-icon>
+      </ion-item>
+      <div *ngIf="loginForm.controls?.['email'].touched && loginForm.controls?.['email'].invalid">
+        <ion-text *ngIf="errorControl.email.errors?.required">
+          Unesite email!
+        </ion-text>
+        <ion-text *ngIf="errorControl.email.errors?.pattern">
+          Email mora biti u odgovarajućem formatu!
+        </ion-text>
+      </div>
+      <br>
+      <ion-item>
+        <ion-input formControlName="password" type="password" class="input" placeholder="Unesite lozinku"></ion-input>
+        <ion-icon name="lock-closed-outline"></ion-icon>
+      </ion-item>
+      <div *ngIf="loginForm.controls?.['password'].touched && loginForm.controls?.['password'].invalid">
+        <ion-text *ngIf="errorControl.password.errors?.required">
+          Unesite lozinku!
+        </ion-text>
+        <ion-text *ngIf="errorControl.password.errors?.pattern">
+          Lozinka mora sadržati najmanje jedan broj, jedno veliko slovo i najmanje 8 karaktera.
+        </ion-text>
+      </div>
+
+    </div>
+    <div class="signUpLink">
+      <p>Novi korisnik?
+        <a [routerLink]="['/sign-up']">Registruj se sada</a>
+      </p>
+    </div>
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end" style="margin-bottom: 30px;">
+      <ion-fab-button (click)="login()">
+        <ion-icon name="chevron-forward"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </form>
+</ion-content>

@@ -1,25 +1,28 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      <h1>Danas</h1>
+    <ion-title class="header-title">
+      <h1>Pratite vaša putovanja!</h1>
       <p class="date"> {{today|date:'fullDate'}} </p>
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" style="padding-top:56px;">
   <ion-list *ngFor="let putovanje of Putovanja">
-    <ion-card>
+    <ion-card
+      [ngClass]="{'past-trip':isPastTrip(putovanje),'future-trip':isFutureTrip(putovanje),'current-trip':isCurrentTrip(putovanje)}">
       <ion-card-header>
         <ion-card-title>
-          {{putovanje.Destinacija}}
-          <p>Datum od:{{putovanje.datumOd | date:'fullDate' }}</p>
-          <p>Datum do:{{putovanje.datumDO | date:'fullDate' }}</p>
-          <img [src]="putovanje.slika" alt="{{ putovanje.destinacija }}" style="width: 100%; height: auto;">
+          <h2>{{putovanje.Destinacija}}</h2>
+          <p>Datum od: <br>{{putovanje.datumOd | date:'fullDate' }}</p>
+          <p>Datum do: <br> {{putovanje.datumDO | date:'fullDate' }}</p>
+
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
+        <img [src]="putovanje.slika" alt="{{ putovanje.destinacija }}" style="width: 100%; height: auto;">
         <ion-row>
+
           <ion-button (click)="goToUpdatePage(putovanje)">
             Update
           </ion-button>
