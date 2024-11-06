@@ -9,10 +9,11 @@ import {
 } from '@angular/fire/firestore';
 import { Timestamp, updateDoc } from 'firebase/firestore';
 export interface Putovanje {
-  destinacija: string;
+
+  Destinacija: string;
   datumDO: string;
   datumOd: string;
-  idPutovanja?: number;
+  id: number;
   slika: string;
 
 }
@@ -30,18 +31,17 @@ export class DataService {
     const putovanjeRef = collection(this.firestore, 'Putovanja');
     return addDoc(putovanjeRef, putovanje);
   }
-  updatePutovanje(putovanje: Putovanje) {
-    const putovanjeRef = doc(this.firestore, `Putovanja/${putovanje.idPutovanja}`);
+  updatePutovanje(putovanje: Putovanje, updatedData: { Destinacija: any; datumOd: any; datumDO: any; slika: any; }) {
+    const putovanjeRef = doc(this.firestore, `Putovanja/${putovanje.id}`);
     return updateDoc(putovanjeRef, {
-      destinacija: putovanje.destinacija,
+      Destinacija: putovanje.Destinacija,
       datumDO: putovanje.datumDO,
       datumOd: putovanje.datumOd,
-      idPutovanja: putovanje.idPutovanja,
       slika: putovanje.slika,
     });
   }
   deletePutovanje(putovanje: Putovanje) {
-    const putovanjeRef = doc(this.firestore, `Putovanja/${putovanje.idPutovanja}`);
+    const putovanjeRef = doc(this.firestore, `Putovanja/${putovanje.id}`);
     return deleteDoc(putovanjeRef);
   }
 }

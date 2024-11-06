@@ -8,10 +8,10 @@ import { Timestamp } from 'firebase/firestore';
 
 
 type Putovanje = {
-  destinacija?: string,
+  Destinacija: string,
   datumDO: string,
   datumOd: string,
-  idPutovanja: number,
+  id,
   slika: string
 
 }
@@ -48,11 +48,12 @@ export class HomePage implements OnInit, OnDestroy {
     this.dataService.getPutovanje().subscribe(data => {
       this.Putovanja = data.map((item: any) => ({
         ...item,
-        datumDO: item.datumDO ? item.datumDO.toDate() : null,
-        datumOd: item.datumOd ? item.datumOd.toDate() : null,
+        datumDO: item.datumDO instanceof Timestamp ? item.datumDO.toDate() : new Date(item.datumDo),
+        datumOd: item.datumOd instanceof Timestamp ? item.datumOd.toDate() : new Date(item.datumOd),
         slika: item.slika
       })) as Putovanje[];
     });
+    console.log(this.Putovanja)
 
   }
   async getData() {
@@ -76,7 +77,7 @@ export class HomePage implements OnInit, OnDestroy {
   async goToUpdatePage(putovanje: Putovanje) {
     const modal = await this.modalCtrl.create({
       component: UpdateItemPage,
-      componentProps: putovanje
+      componentProps: { putovanje }
     })
     return await modal.present();
   }

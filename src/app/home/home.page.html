@@ -8,30 +8,29 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" style="padding-top:56px;">
-  <ion-list *ngFor="let putovanje of Putovanja">
-    <ion-card
-      [ngClass]="{'past-trip':isPastTrip(putovanje),'future-trip':isFutureTrip(putovanje),'current-trip':isCurrentTrip(putovanje)}">
-      <ion-card-header>
-        <ion-card-title>
-          <h2>{{putovanje.Destinacija}}</h2>
-          <p>Datum od: <br>{{putovanje.datumOd | date:'fullDate' }}</p>
-          <p>Datum do: <br> {{putovanje.datumDO | date:'fullDate' }}</p>
+  <ng-container *ngIf="Putovanja">
+    <ion-list *ngFor="let putovanje of Putovanja">
+      <ion-card
+        [ngClass]="{'past-trip':isPastTrip(putovanje),'future-trip':isFutureTrip(putovanje),'current-trip':isCurrentTrip(putovanje)}">
+        <ion-card-header>
+          <ion-card-title>
+            <h2>{{putovanje.Destinacija}}</h2>
+            <p>Datum od: <br>{{putovanje.datumOd | date:'fullDate' }}</p>
+            <p>Datum do: <br>{{putovanje.datumDO | date:'fullDate' }}</p>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <img [src]="putovanje.slika" alt="{{ putovanje.Destinacija }}" style="width: 100%; height: auto;">
+          <ion-row>
+            <ion-button (click)="goToUpdatePage(putovanje)">Izmeni</ion-button>
+            <ion-button color="danger" (click)="deletePutovanje(putovanje.id)">Obriši</ion-button>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
 
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <img [src]="putovanje.slika" alt="{{ putovanje.destinacija }}" style="width: 100%; height: auto;">
-        <ion-row>
+  </ng-container>
 
-          <ion-button (click)="goToUpdatePage(putovanje)">
-            Update
-          </ion-button>
-          <ion-button>Delete</ion-button>
-        </ion-row>
-      </ion-card-content>
-
-    </ion-card>
-  </ion-list>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="goToAddPage()">
       <ion-icon name="add">Add</ion-icon>
