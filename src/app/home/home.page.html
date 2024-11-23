@@ -3,6 +3,12 @@
     <ion-title class="header-title">
       <h1>Pratite vaša putovanja!</h1>
       <p class="date"> {{today|date:'fullDate'}} </p>
+      <ion-fab vertical="bottom" horizontal="end">
+        <ion-fab-button class="custom-fab" color="danger" (click)="logout()">
+          <p>Izlogujte se</p>
+        </ion-fab-button>
+      </ion-fab>
+
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -17,6 +23,10 @@
             <h2>{{putovanje.Destinacija}}</h2>
             <p>Datum od: <br>{{putovanje.datumOd | date:'fullDate' }}</p>
             <p>Datum do: <br>{{putovanje.datumDO | date:'fullDate' }}</p>
+            <ion-button expand="full" (click)="showDestinacijaDetails(putovanje.podaci)">
+              Više detalja
+            </ion-button>
+
           </ion-card-title>
         </ion-card-header>
         <ion-card-content>

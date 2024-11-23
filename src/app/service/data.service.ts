@@ -4,17 +4,28 @@ import {
   Firestore,
   collectionData,
   doc,
+  docData,
   deleteDoc,
   addDoc
 } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 import { Timestamp, updateDoc } from 'firebase/firestore';
+
+import { Observable } from 'rxjs';
 export interface Putovanje {
 
   Destinacija: string;
   datumDO: string;
   datumOd: string;
   id: number;
+  podaci: string;
   slika: string;
+
+
+}
+export interface Destinacija {
+  brojStanovnika: number,
+  naziv: string,
 
 }
 @Injectable({
@@ -22,7 +33,14 @@ export interface Putovanje {
 })
 export class DataService {
 
-  constructor(private firestore: Firestore) { }
+  constructor(private firestore: Firestore, private router: Router) { }
+  getDestinacijaById(podaciId: string): Observable<Destinacija | undefined> {
+    const destinacijaDocRef = doc(this.firestore, `Destinacija/${podaciId}`);
+    return docData(destinacijaDocRef, { idField: 'id' }) as Observable<Destinacija>;
+  }
+  navigateToDestinacija(podaciId: string) {
+    this.router.navigate([`/destinacija/${podaciId}`]);
+  }
   getPutovanje() {
     const putovanjeRef = collection(this.firestore, 'Putovanja');
     return collectionData(putovanjeRef, { idField: 'id' });

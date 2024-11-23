@@ -1,0 +1,12 @@
+<ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Detalji destinacije</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <div *ngIf="destinacija">
+    <p><strong>Naziv:</strong> {{ destinacija.naziv }}</p>
+    <p><strong>Broj stanovnika:</strong> {{ destinacija.brojStanovnika }}</p>
+
+  </div>
+</ion-content>

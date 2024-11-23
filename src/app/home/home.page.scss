@@ -26,15 +26,22 @@
 
 .past-trip {
   background-color: #f8d7da;
-  /* svetlocrvena za prošla putovanja */
+
 }
 
 .future-trip {
   background-color: #d4edda;
-  /* svetlozelena za buduća putovanja */
+
 }
 
 .current-trip {
   background-color: #d1ecf1;
-  /* svetloplava za trenutna putovanja */
+
+}
+
+.custom-fab {
+  width: 90px;
+  height: 40px;
+  font-size: 14px;
+  margin-bottom: 40px;
 }

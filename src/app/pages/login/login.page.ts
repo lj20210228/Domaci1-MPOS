@@ -23,7 +23,7 @@ export class LoginPage implements OnInit {
       ]],
       password: ['', [
         Validators.required,
-        Validators.pattern("(?=.*\\d)(?=.*[A-Z]).{8,}")
+        Validators.pattern("(?=.*\\d)(?=.*[A-Z])(?=.*\\W).{8,}")
       ]]
     });
   }
@@ -40,7 +40,6 @@ export class LoginPage implements OnInit {
     console.log('Greške u formi:', this.loginForm.errors);
 
     if (this.loginForm.valid) {
-      // Ako je forma validna, pozivamo metodu iz authService za login
       const user = await this.authService.loginUser(this.loginForm.value.email, this.loginForm.value.password).catch((error) => {
         console.log(error);
         loading.dismiss();
@@ -48,7 +47,7 @@ export class LoginPage implements OnInit {
 
       if (user) {
         loading.dismiss();
-        this.router.navigate(['/home']);  // Pravilno koristi router za navigaciju
+        this.router.navigate(['/home']);
       } else {
         console.log('Unesi tačne vrednosti');
       }

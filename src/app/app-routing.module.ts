@@ -31,6 +31,11 @@ const routes: Routes = [
     path: 'update-item',
     loadChildren: () => import('./update-item/update-item.module').then(m => m.UpdateItemPageModule)
   },
+  {
+    path: 'destinacija/:id',
+    loadChildren: () => import('./pages/destinacija/destinacija.module').then(m => m.DestinacijaPageModule)
+  },
+
 
 
 
