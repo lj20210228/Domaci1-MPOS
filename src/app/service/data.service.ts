@@ -14,19 +14,26 @@ import { Timestamp, updateDoc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 export interface Putovanje {
 
-  Destinacija: string;
-  datumDO: string;
-  datumOd: string;
-  id: number;
-  podaci: string;
-  slika: string;
-
+  Destinacija: string,
+  datumOd: string,
+  datumDO: string,
+  id: string,
+  slika: string,
+  troskovi: string
 
 }
-export interface Destinacija {
-  brojStanovnika: number,
-  naziv: string,
+export interface Troskovi {
 
+  BoravisnaTaksa: number,
+  Izleti: number,
+  Prevoz: number,
+  Smestaj: number,
+  VrstaPrevoza: string,
+  putovanje: string
+
+}
+export interface DodatniTroskovi {
+  doplata: string[];
 }
 @Injectable({
   providedIn: 'root'
@@ -34,12 +41,21 @@ export interface Destinacija {
 export class DataService {
 
   constructor(private firestore: Firestore, private router: Router) { }
-  getDestinacijaById(podaciId: string): Observable<Destinacija | undefined> {
-    const destinacijaDocRef = doc(this.firestore, `Destinacija/${podaciId}`);
-    return docData(destinacijaDocRef, { idField: 'id' }) as Observable<Destinacija>;
+  getDodatniTroskovi(troskoviID: string): Observable<DodatniTroskovi | undefined> {
+    const dodatniTroskoviRef = doc(this.firestore, `DodatniTroskovi/${troskoviID}`);
+    return docData(dodatniTroskoviRef, { idField: 'id' }) as Observable<DodatniTroskovi>;
+
   }
-  navigateToDestinacija(podaciId: string) {
-    this.router.navigate([`/destinacija/${podaciId}`]);
+  getTrokoviById(podaciId: string): Observable<Troskovi> {
+    const destinacijaDocRef = doc(this.firestore, `Troskovi/${podaciId}`);
+    return docData(destinacijaDocRef, { idField: 'id' }) as Observable<Troskovi>;
+  }
+  getPutovanjeById(putovanjeId: string): Observable<Putovanje> {
+    const putovanjeRef = doc(this.firestore, `Putovanja/${putovanjeId}`);
+    return docData(putovanjeRef, { idField: 'id' }) as Observable<Putovanje>;
+  }
+  navigateToTroskovi(podaciId: string) {
+    this.router.navigate([`/ troskovi / ${podaciId}`]);
   }
   getPutovanje() {
     const putovanjeRef = collection(this.firestore, 'Putovanja');
@@ -50,7 +66,7 @@ export class DataService {
     return addDoc(putovanjeRef, putovanje);
   }
   updatePutovanje(putovanje: Putovanje, updatedData: { Destinacija: any; datumOd: any; datumDO: any; slika: any; }) {
-    const putovanjeRef = doc(this.firestore, `Putovanja/${putovanje.id}`);
+    const putovanjeRef = doc(this.firestore, `Putovanja / ${putovanje}`);
     return updateDoc(putovanjeRef, {
       Destinacija: putovanje.Destinacija,
       datumDO: putovanje.datumDO,
@@ -59,7 +75,21 @@ export class DataService {
     });
   }
   deletePutovanje(putovanje: Putovanje) {
-    const putovanjeRef = doc(this.firestore, `Putovanja/${putovanje.id}`);
+    const putovanjeRef = doc(this.firestore, `Putovanja / ${putovanje.id}`);
     return deleteDoc(putovanjeRef);
+  }
+  addTrosak(trosak: Troskovi) {
+    const trosakRef = collection(this.firestore, 'Troskovi');
+    return addDoc(trosakRef, trosak);
+  }
+  updateTroskovi(troskovi: Troskovi, updatedData: { BoravisnaTaksa: any, Izleti: any, Prevoz: any, Smestaj: any, VrstaPrevoza: any }) {
+    const troskoviRef = doc(this.firestore, `Troskovi/${troskovi}`);
+    return updateDoc(troskoviRef, {
+      BoravisnaTaksa: troskovi.BoravisnaTaksa,
+      Izleti: troskovi.Izleti,
+      Prevoz: troskovi.Prevoz,
+      Smestaj: troskovi.Smestaj,
+      VrstaPrevoza: troskovi.VrstaPrevoza
+    })
   }
 }

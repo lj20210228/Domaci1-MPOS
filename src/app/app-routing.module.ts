@@ -32,8 +32,16 @@ const routes: Routes = [
     loadChildren: () => import('./update-item/update-item.module').then(m => m.UpdateItemPageModule)
   },
   {
-    path: 'destinacija/:id',
-    loadChildren: () => import('./pages/destinacija/destinacija.module').then(m => m.DestinacijaPageModule)
+    path: 'troskovi/:id',
+    loadChildren: () => import('./troskovi/troskovi.module').then(m => m.TroskoviPageModule)
+  },
+  {
+    path: 'dodaj-trosak',
+    loadChildren: () => import('./dodaj-trosak/dodaj-trosak.module').then( m => m.DodajTrosakPageModule)
+  },
+  {
+    path: 'update-troskovi',
+    loadChildren: () => import('./update-troskovi/update-troskovi.module').then( m => m.UpdateTroskoviPageModule)
   },
 
 

@@ -1,21 +1,24 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, IonicSafeString } from '@ionic/angular';
 import { AddNewItemPage } from '../add-new-item/add-new-item.page';
 import { UpdateItemPage } from '../update-item/update-item.page';
 import { DataService } from '../service/data.service';
-import { Subscription } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
 import { Timestamp } from 'firebase/firestore';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
-import { Destinacija } from '../service/data.service';
+import { Troskovi } from '../service/data.service';
+import { DodajTrosakPage } from '../dodaj-trosak/dodaj-trosak.page';
+
+
 
 type Putovanje = {
   Destinacija: string,
   datumDO: string,
   datumOd: string,
-  id: number,
-  podaci: string,
+  id: string,
   slika: string,
+  troskovi: string
 
 
 }
@@ -53,8 +56,8 @@ export class HomePage implements OnInit, OnDestroy {
     this.dataService.getPutovanje().subscribe(data => {
       this.Putovanja = data.map((item: any) => ({
         ...item,
-        datumDO: item.datumDO instanceof Timestamp ? item.datumDO.toDate() : new Date(item.datumDo),
         datumOd: item.datumOd instanceof Timestamp ? item.datumOd.toDate() : new Date(item.datumOd),
+        datumDO: item.datumDO instanceof Timestamp ? item.datumDO.toDate() : new Date(item.datumDo),
         slika: item.slika
       })) as Putovanje[];
     });
@@ -62,38 +65,52 @@ export class HomePage implements OnInit, OnDestroy {
 
   }
 
-  async showDestinacijaDetails(podaciId: string) {
-    this.dataService.getDestinacijaById(podaciId).subscribe(async (destinacija: Destinacija) => {
-      if (destinacija) {
-        const alert = await this.alertController.create({
-          header: 'Detalji destinacije',
-          message: `
-            Naziv: ${destinacija.naziv} 
-            Broj stanovnika: ${destinacija.brojStanovnika}
-          `,
-          buttons: [
-            {
-              text: 'Close',
-              role: 'cancel',
-              handler: () => {
-                console.log('Alert closed');
-              }
-            },
-            {
-              text: 'Idi na detalje',
-              handler: () => {
-                this.route.navigate([`/destinacija/${podaciId}`]);
-              }
-            }
-          ],
+  async showTroskoviDetails(podaciId: string, putovanjeId: string) {
+    this.dataService.getTrokoviById(podaciId).subscribe(async (troskovi: Troskovi) => {
+      if (troskovi) {
+        this.dataService.getPutovanjeById(troskovi.putovanje).subscribe(async (putovanje: Putovanje) => {
+          if (putovanje) {
+            const alert = await this.alertController.create({
+              header: `Troškovi putovanja: ${putovanje.Destinacija}`,
+              message: `
+              
+                Destinacija: ${putovanje.Destinacija}
+                <br>Prevoz: ${troskovi.Prevoz}
+                <br> Smeštaj: ${troskovi.Smestaj}`,
+              buttons: [
+                {
+                  text: 'Close',
+                  role: 'cancel',
+                  handler: () => {
+                    console.log('Alert closed');
+                  }
+                },
+                {
+                  text: 'Idi na detalje',
+                  role: 'confirm',
+                  handler: async () => {
+                    await alert.dismiss();
+                    this.route.navigate([`troskovi/${podaciId}`]);
+                  }
+                }
+              ],
+            });
+            await alert.present();
+          } else {
+            console.error('Putovanje nije pronađeno');
+
+          }
         });
-        await alert.present();
       } else {
-        console.error('Destinacija nije pronadjena');
+        console.error('Troškovi nisu pronađeni');
+        this.goToDodajTrosakPage(putovanjeId);
+
+
+
       }
-    }
-    )
+    });
   }
+
   async getData() {
 
     this.sub = this.dataService.getPutovanje().subscribe((res) => {
@@ -124,6 +141,18 @@ export class HomePage implements OnInit, OnDestroy {
       this.route.navigate(['/login'])
     })
   }
-
+  setResult(ev) {
+    console.log(`Dismissed with role: ${ev.detail.role}`);
+  }
+  async goToDodajTrosakPage(putovanjeId: string) {
+    const modal = await this.modalCtrl.create({
+      component: DodajTrosakPage,
+      componentProps: {
+        id: putovanjeId
+      }
+    })
+    return await modal.present();
+  }
 
 }
+

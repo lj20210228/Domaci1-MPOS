@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Troskovi
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Osnovni troškovi</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <strong>Boravišna taksa:</strong> {{ Troskovi?.BoravisnaTaksa || 0 }} EUR
+        </ion-item>
+        <ion-item>
+          <strong>Izleti:</strong> {{ Troskovi?.Izleti || 0 }} EUR
+        </ion-item>
+        <ion-item>
+          <strong>Prevoz:</strong> {{ Troskovi?.Prevoz || 0 }} EUR
+        </ion-item>
+        <ion-item>
+          <strong>Smeštaj:</strong> {{ Troskovi?.Smestaj || 0 }} EUR
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Dodatni troškovi</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div *ngIf="Troskovi">
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <h2>{{Troskovi.VrstaPrevoza}}</h2>
+
+              <p><strong>Cena:</strong> {{Troskovi.doplata}}</p>
+              <p><strong>Tip troska:</strong> {{Troskovi.tipTroska}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+  <ion-button expand="block" [routerLink]="['/home']">
+    Vrati se nazad
+  </ion-button>
+</ion-content>

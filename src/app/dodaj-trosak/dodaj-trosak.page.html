@@ -1,0 +1,54 @@
+<ion-content [fullscreen]="true">
+  <div>
+    <h1 style="text-align: center;">
+      Dodaj troskove
+    </h1>
+    <ion-item>
+      <ion-label position="floating">Boravisna taksa</ion-label>
+      <ion-input [(ngModel)]="BoravisnaTaksa" placeholder="Unesite cenu boravisne taksu"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Izleti</ion-label>
+      <ion-input [(ngModel)]="Izleti" placeholder="Unesite cenu izleta"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Prevoz</ion-label>
+      <ion-input [(ngModel)]="Prevoz" placeholder="Unesite cenu prevoza"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Smestaj</ion-label>
+      <ion-input [(ngModel)]="Smestaj" placeholder="Unesite cenu smestaja"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Dodatni troškovi</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+
+            <ion-select [(ngModel)]="izabranaOpcija" placeholder="Izaberite prevoz">
+              <ion-select-option *ngFor="let trosak of DodatniTroskovi" [value]="trosak">
+                {{ trosak.naziv }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <div *ngIf="izabranaOpcija">
+            <ion-item>
+              <strong>Naziv:</strong> {{ izabranaOpcija.tipTroska }}
+            </ion-item>
+            <ion-item>
+              <strong>Doplata:</strong> {{ izabranaOpcija.doplata }} EUR
+            </ion-item>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </div>
+
+
+  <ion-button expand="block" (click)="addNewTrosak()">
+    Dodaj trošak
+  </ion-button>
+</ion-content>

@@ -23,9 +23,10 @@
             <h2>{{putovanje.Destinacija}}</h2>
             <p>Datum od: <br>{{putovanje.datumOd | date:'fullDate' }}</p>
             <p>Datum do: <br>{{putovanje.datumDO | date:'fullDate' }}</p>
-            <ion-button expand="full" (click)="showDestinacijaDetails(putovanje.podaci)">
-              Više detalja
+            <ion-button expand="full" (click)="showTroskoviDetails(putovanje.troskovi,putovanje.id)">
+              Troškovi Putovanja
             </ion-button>
+
 
           </ion-card-title>
         </ion-card-header>

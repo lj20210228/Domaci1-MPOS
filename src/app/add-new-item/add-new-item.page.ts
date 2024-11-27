@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Firestore, collection, addDoc, Timestamp } from '@angular/fire/firestore';
+import { DataService } from '../service/data.service';
 
 @Component({
   selector: 'app-add-new-item',
@@ -10,16 +11,17 @@ export class AddNewItemPage {
   Destinacija: string;
   datumDO: string;
   datumOd: string;
-
   slika: string;
+  troskovi: string;
 
-  constructor(private firestore: Firestore) { }
+  constructor(private firestore: Firestore, private dataService: DataService
+  ) { }
 
   addNewItem() {
     const newItem = {
       Destinacija: this.Destinacija,
-      datumDo: Timestamp.fromDate(new Date(this.datumDO)),
       datumOd: Timestamp.fromDate(new Date(this.datumOd)),
+      datumDO: Timestamp.fromDate(new Date(this.datumDO)),
       slika: this.slika,
 
     };

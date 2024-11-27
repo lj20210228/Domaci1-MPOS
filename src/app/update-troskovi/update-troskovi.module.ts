@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { DestinacijaPageRoutingModule } from './destinacija-routing.module';
+import { UpdateTroskoviPageRoutingModule } from './update-troskovi-routing.module';
 
-import { DestinacijaPage } from './destinacija.page';
+import { UpdateTroskoviPage } from './update-troskovi.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    DestinacijaPageRoutingModule
+    UpdateTroskoviPageRoutingModule
   ],
-  declarations: [DestinacijaPage]
+  declarations: [UpdateTroskoviPage]
 })
-export class DestinacijaPageModule {}
+export class UpdateTroskoviPageModule {}
