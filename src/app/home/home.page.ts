@@ -53,11 +53,13 @@ export class HomePage implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
   ngOnInit(): void {
+
     this.dataService.getPutovanje().subscribe(data => {
       this.Putovanja = data.map((item: any) => ({
         ...item,
         datumOd: item.datumOd instanceof Timestamp ? item.datumOd.toDate() : new Date(item.datumOd),
         datumDO: item.datumDO instanceof Timestamp ? item.datumDO.toDate() : new Date(item.datumDo),
+
         slika: item.slika
       })) as Putovanje[];
     });
@@ -120,8 +122,31 @@ export class HomePage implements OnInit, OnDestroy {
 
   }
   async deletePutovanja(putovanje: any) {
-    await this.dataService.deletePutovanje(putovanje);
+    this.alertController.create({
+      header: 'Potvrda',
+      message: 'Da li sigurno zelite da obrisete putovanje?',
+      buttons: [
+        {
+          text: 'Close',
+          role: 'cancel',
+          handler: () => {
+            console.log('Brisanje otkazano');
+          }
+
+        },
+        {
+          text: 'Obrisi',
+          role: 'confirm',
+          handler: () => {
+            console.log('Brisanje potvrdjeno');
+            this.dataService.deletePutovanje(putovanje);
+          }
+        }
+      ]
+    }).then((alert) => alert.present());
+
   }
+
   async goToAddPage() {
     const modal = await this.modalCtrl.create({
       component: AddNewItemPage,
@@ -130,10 +155,16 @@ export class HomePage implements OnInit, OnDestroy {
     return await modal.present();
   }
   async goToUpdatePage(putovanje: Putovanje) {
+    console.log('Podaci koje šaljem u modal:', putovanje);
+    putovanje.datumOd = new Date(putovanje.datumOd).toISOString().substring(0, 10);  // Konvertovanje u ISO format
+    putovanje.datumDO = new Date(putovanje.datumDO).toISOString().substring(0, 10);
     const modal = await this.modalCtrl.create({
       component: UpdateItemPage,
-      componentProps: { putovanje }
-    })
+      componentProps: {
+        putovanje: putovanje,
+        putovanjeId: putovanje.id
+      },
+    });
     return await modal.present();
   }
   async logout() {

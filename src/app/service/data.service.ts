@@ -6,12 +6,13 @@ import {
   doc,
   docData,
   deleteDoc,
-  addDoc
+  addDoc,
+  getDoc
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Timestamp, updateDoc } from 'firebase/firestore';
 
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 export interface Putovanje {
 
   Destinacija: string,
@@ -54,6 +55,7 @@ export class DataService {
     const putovanjeRef = doc(this.firestore, `Putovanja/${putovanjeId}`);
     return docData(putovanjeRef, { idField: 'id' }) as Observable<Putovanje>;
   }
+
   navigateToTroskovi(podaciId: string) {
     this.router.navigate([`/ troskovi / ${podaciId}`]);
   }
@@ -65,19 +67,21 @@ export class DataService {
     const putovanjeRef = collection(this.firestore, 'Putovanja');
     return addDoc(putovanjeRef, putovanje);
   }
-  updatePutovanje(putovanje: Putovanje, updatedData: { Destinacija: any; datumOd: any; datumDO: any; slika: any; }) {
-    const putovanjeRef = doc(this.firestore, `Putovanja / ${putovanje}`);
-    return updateDoc(putovanjeRef, {
-      Destinacija: putovanje.Destinacija,
-      datumDO: putovanje.datumDO,
-      datumOd: putovanje.datumOd,
-      slika: putovanje.slika,
-    });
+  updatePutovanje(putovanjeId: string, updatedData: { Destinacija: any; datumOd: any; datumDO: any; slika: any; }) {
+    const putovanjeRef = doc(this.firestore, `Putovanja/${putovanjeId}`);
+    return updateDoc(putovanjeRef, updatedData);
   }
-  deletePutovanje(putovanje: Putovanje) {
-    const putovanjeRef = doc(this.firestore, `Putovanja / ${putovanje.id}`);
-    return deleteDoc(putovanjeRef);
+  deletePutovanje(putovanjeId: string) {
+    const putovanjeRef = doc(this.firestore, `Putovanja/${putovanjeId}`);
+    return deleteDoc(putovanjeRef)
+      .then(() => {
+        console.log(`Putovanje sa ID-jem ${putovanjeId} je uspešno obrisano.`);
+      })
+      .catch((error) => {
+        console.error(`Greška prilikom brisanja putovanja: ${error}`);
+      });
   }
+
   addTrosak(trosak: Troskovi) {
     const trosakRef = collection(this.firestore, 'Troskovi');
     return addDoc(trosakRef, trosak);

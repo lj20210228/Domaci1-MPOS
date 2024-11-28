@@ -1,20 +1,21 @@
 <ion-content [fullscreen]="true">
   <div class="ion-padding">
     <h1 style="text-align: center;">Ažuriraj stavku</h1>
+    <ion-button position="end" (click)="cancel()">Cancel</ion-button>
 
     <ion-item>
       <ion-label position="floating">Destinacija</ion-label>
-      <ion-input [(ngModel)]="putovanje.destinacija"></ion-input>
+      <ion-input [(ngModel)]="putovanje.Destinacija"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating">Datum Od</ion-label>
-      <ion-datetime [(ngModel)]="putovanje.datumOd"></ion-datetime>
+      <ion-datetime displaFormat="YYYY-MM-DD" [(ngModel)]="putovanje.datumOd"></ion-datetime>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating">Datum Do</ion-label>
-      <ion-datetime [(ngModel)]="putovanje.datumDO"></ion-datetime>
+      <ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)]="putovanje.datumDO"></ion-datetime>
     </ion-item>
 
     <ion-item>

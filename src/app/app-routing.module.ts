@@ -28,7 +28,7 @@ const routes: Routes = [
     loadChildren: () => import('./add-new-item/add-new-item.module').then(m => m.AddNewItemPageModule)
   },
   {
-    path: 'update-item',
+    path: 'update-item/:id',
     loadChildren: () => import('./update-item/update-item.module').then(m => m.UpdateItemPageModule)
   },
   {
@@ -37,11 +37,11 @@ const routes: Routes = [
   },
   {
     path: 'dodaj-trosak',
-    loadChildren: () => import('./dodaj-trosak/dodaj-trosak.module').then( m => m.DodajTrosakPageModule)
+    loadChildren: () => import('./dodaj-trosak/dodaj-trosak.module').then(m => m.DodajTrosakPageModule)
   },
   {
     path: 'update-troskovi',
-    loadChildren: () => import('./update-troskovi/update-troskovi.module').then( m => m.UpdateTroskoviPageModule)
+    loadChildren: () => import('./update-troskovi/update-troskovi.module').then(m => m.UpdateTroskoviPageModule)
   },
 
 
