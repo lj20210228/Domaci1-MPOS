@@ -11,7 +11,7 @@ import { getDoc, Timestamp } from 'firebase/firestore';
   styleUrls: ['./update-item.page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UpdateItemPage implements OnChanges {
+export class UpdateItemPage implements OnChanges, OnInit {
   @Input() putovanje: any = {
     Destinacija: '',
     datumOd: '',
@@ -29,13 +29,11 @@ export class UpdateItemPage implements OnChanges {
     private firestore: Firestore,
     private changeDetectorRef: ChangeDetectorRef
   ) {
-    this.route.paramMap.subscribe(params => {
-      const putovanjeId = params.get('id');
-      if (putovanjeId) {
-        this.putovanjeId = putovanjeId;
-        this.loadPutovanjeDetails();
-      }
-    });
+
+  }
+  ngOnInit(): void {
+    this.loadPutovanjeDetails();
+    console.log("POdaci o putovanju", this.putovanje);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -44,6 +42,7 @@ export class UpdateItemPage implements OnChanges {
   }
 
   loadPutovanjeDetails() {
+
     if (this.putovanjeId) {
       const docRef = doc(this.firestore, `Putovanja/${this.putovanjeId}`);
       getDoc(docRef).then((docSnap) => {

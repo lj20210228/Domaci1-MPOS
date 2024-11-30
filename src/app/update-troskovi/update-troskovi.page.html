@@ -1,13 +1,68 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>updateTroskovi</ion-title>
+    <ion-title>
+      Izmeni troskove
+    </ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Osnovni troškovi</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label position="floating">Boravisna taksa</ion-label>
+          <ion-input [(ngModel)]="troskovi.BoravisnaTaksa"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Izleti</ion-label>
+          <ion-input [(ngModel)]="troskovi.Izleti"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Prevoz</ion-label>
+          <ion-input [(ngModel)]="troskovi.Prevoz"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Smestaj</ion-label>
+          <ion-input [(ngModel)]="troskovi.Smestaj"></ion-input>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-item>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Dodatni troškovi</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">updateTroskovi</ion-title>
-    </ion-toolbar>
-  </ion-header>
+          <ion-select [(ngModel)]="izabranaOpcija" placeholder="Izaberite prevoz">
+            <ion-select-option *ngFor="let trosak of DodatniTroskovi" [value]="trosak" selected="{{izabranaOpcija}}">
+              {{trosak.naziv }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <div *ngIf=" izabranaOpcija">
+          <ion-item>
+            <ion-label position="floating">Naziv:</ion-label>
+            <ion-input [(ngModel)]="izabranaOpcija.tipTroska"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Doplata:</ion-label>
+            <ion-input [(ngModel)]="izabranaOpcija.doplata"></ion-input>
+          </ion-item>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-item>
+  <ion-button expand="block" (click)="goToTroskoviPage()">
+    Vrati se nazad
+  </ion-button>
+  <ion-button expand="block" (click)="updateItem()">
+    Sacuvaj promene
+  </ion-button>
 </ion-content>

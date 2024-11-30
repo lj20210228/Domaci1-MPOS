@@ -47,7 +47,13 @@
 
     </ion-card-content>
   </ion-card>
-  <ion-button expand="block" [routerLink]="['/home']">
+  <ion-button expand="block" (click)="goToHome()">
     Vrati se nazad
+  </ion-button>
+  <ion-button expand="block" (click)="goToUpdateTroskoviPage(Troskovi)">
+    Izmeni troskove
+  </ion-button>
+  <ion-button expand="block" (click)="deleteTroskovi(Troskovi)">
+    Obrisi troskove
   </ion-button>
 </ion-content>

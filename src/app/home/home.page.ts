@@ -4,11 +4,13 @@ import { AddNewItemPage } from '../add-new-item/add-new-item.page';
 import { UpdateItemPage } from '../update-item/update-item.page';
 import { DataService } from '../service/data.service';
 import { Subscription, switchMap } from 'rxjs';
-import { Timestamp } from 'firebase/firestore';
+import { doc, Timestamp } from 'firebase/firestore';
 import { AuthenticationService } from '../authentication.service';
 import { Router } from '@angular/router';
 import { Troskovi } from '../service/data.service';
 import { DodajTrosakPage } from '../dodaj-trosak/dodaj-trosak.page';
+import { TroskoviPage } from '../troskovi/troskovi.page';
+import { Firestore } from '@angular/fire/firestore';
 
 
 
@@ -35,7 +37,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   Putovanja: any;
   sub: Subscription = new Subscription;
-  constructor(public modalCtrl: ModalController, private dataService: DataService, public authService: AuthenticationService, public route: Router, private alertController: AlertController) { }
+  constructor(public modalCtrl: ModalController, private dataService: DataService, public authService: AuthenticationService, public route: Router, private alertController: AlertController, private firestore: Firestore) { }
   isPastTrip(putovanje: any): boolean {
     const now = new Date();
     return putovanje.datumDO < now;
@@ -68,17 +70,33 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   async showTroskoviDetails(podaciId: string, putovanjeId: string) {
+    console.log("id putovanja:" + putovanjeId);
+    console.log("id troskova:" + podaciId);
+    if (!podaciId || podaciId.trim() === '') {
+      console.warn('ID troškova je prazan. Preusmeravam na stranicu dodaj trošak.');
+      this.goToDodajTrosakPage(putovanjeId);
+      return;
+    }
     this.dataService.getTrokoviById(podaciId).subscribe(async (troskovi: Troskovi) => {
-      if (troskovi) {
+      console.log("Troskovi", troskovi);
+
+      if (troskovi && podaciId != null && podaciId != '') {
         this.dataService.getPutovanjeById(troskovi.putovanje).subscribe(async (putovanje: Putovanje) => {
           if (putovanje) {
+            console.log("putovanje:", putovanje);
+            const prevoz = troskovi.Prevoz || 'Nema podataka o prevozu';
+            const smestaj = troskovi.Smestaj || 'Nema podataka o smeštaju';
+
+            console.log("Prevoz:", prevoz);
+            console.log("Smeštaj:", smestaj);
             const alert = await this.alertController.create({
               header: `Troškovi putovanja: ${putovanje.Destinacija}`,
-              message: `
-              
-                Destinacija: ${putovanje.Destinacija}
-                <br>Prevoz: ${troskovi.Prevoz}
-                <br> Smeštaj: ${troskovi.Smestaj}`,
+              message:
+                "Destinacija: " + putovanje.Destinacija + "\n" +
+                "Prevoz: " + prevoz + "\n" +
+                "Smeštaj: " + smestaj,
+              cssClass: 'alert-message'
+              ,
               buttons: [
                 {
                   text: 'Close',
@@ -92,7 +110,7 @@ export class HomePage implements OnInit, OnDestroy {
                   role: 'confirm',
                   handler: async () => {
                     await alert.dismiss();
-                    this.route.navigate([`troskovi/${podaciId}`]);
+                    this.goToTroskoviPage(troskovi);
                   }
                 }
               ],
@@ -100,14 +118,13 @@ export class HomePage implements OnInit, OnDestroy {
             await alert.present();
           } else {
             console.error('Putovanje nije pronađeno');
-
           }
         });
-      } else {
+
+      }
+      else {
         console.error('Troškovi nisu pronađeni');
         this.goToDodajTrosakPage(putovanjeId);
-
-
 
       }
     });
@@ -122,7 +139,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   }
   async deletePutovanja(putovanje: any) {
-    this.alertController.create({
+    const alert = await this.alertController.create({
       header: 'Potvrda',
       message: 'Da li sigurno zelite da obrisete putovanje?',
       buttons: [
@@ -137,13 +154,22 @@ export class HomePage implements OnInit, OnDestroy {
         {
           text: 'Obrisi',
           role: 'confirm',
-          handler: () => {
+          handler: async () => {
+            if (putovanje.troskovi) {
+              console.log("putovanje.troskovi:", putovanje.troskovi);
+              await this.dataService.deleteTroskovi(putovanje.troskovi);
+
+
+            }
             console.log('Brisanje potvrdjeno');
-            this.dataService.deletePutovanje(putovanje);
+            await this.dataService.deletePutovanje(putovanje.id);
+
+
           }
         }
       ]
-    }).then((alert) => alert.present());
+    });
+    await alert.present();
 
   }
 
@@ -156,7 +182,7 @@ export class HomePage implements OnInit, OnDestroy {
   }
   async goToUpdatePage(putovanje: Putovanje) {
     console.log('Podaci koje šaljem u modal:', putovanje);
-    putovanje.datumOd = new Date(putovanje.datumOd).toISOString().substring(0, 10);  // Konvertovanje u ISO format
+    putovanje.datumOd = new Date(putovanje.datumOd).toISOString().substring(0, 10);
     putovanje.datumDO = new Date(putovanje.datumDO).toISOString().substring(0, 10);
     const modal = await this.modalCtrl.create({
       component: UpdateItemPage,
@@ -180,6 +206,17 @@ export class HomePage implements OnInit, OnDestroy {
       component: DodajTrosakPage,
       componentProps: {
         id: putovanjeId
+      }
+    })
+    return await modal.present();
+  }
+  async goToTroskoviPage(troskovi: Troskovi) {
+    console.log("Putovanje id", troskovi);
+    const modal = await this.modalCtrl.create({
+      component: TroskoviPage,
+      componentProps: {
+        troskovi: troskovi,
+        troskoviId: troskovi.id
       }
     })
     return await modal.present();

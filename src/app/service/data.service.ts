@@ -31,6 +31,7 @@ export interface Troskovi {
   Smestaj: number,
   VrstaPrevoza: string,
   putovanje: string
+  , id: string,
 
 }
 export interface DodatniTroskovi {
@@ -48,8 +49,8 @@ export class DataService {
 
   }
   getTrokoviById(podaciId: string): Observable<Troskovi> {
-    const destinacijaDocRef = doc(this.firestore, `Troskovi/${podaciId}`);
-    return docData(destinacijaDocRef, { idField: 'id' }) as Observable<Troskovi>;
+    const troskoviRef = doc(this.firestore, `Troskovi/${podaciId}`);
+    return docData(troskoviRef, { idField: 'id' }) as Observable<Troskovi>;
   }
   getPutovanjeById(putovanjeId: string): Observable<Putovanje> {
     const putovanjeRef = doc(this.firestore, `Putovanja/${putovanjeId}`);
@@ -57,7 +58,7 @@ export class DataService {
   }
 
   navigateToTroskovi(podaciId: string) {
-    this.router.navigate([`/ troskovi / ${podaciId}`]);
+    this.router.navigate([`troskovi/${podaciId}`]);
   }
   getPutovanje() {
     const putovanjeRef = collection(this.firestore, 'Putovanja');
@@ -71,6 +72,7 @@ export class DataService {
     const putovanjeRef = doc(this.firestore, `Putovanja/${putovanjeId}`);
     return updateDoc(putovanjeRef, updatedData);
   }
+
   deletePutovanje(putovanjeId: string) {
     const putovanjeRef = doc(this.firestore, `Putovanja/${putovanjeId}`);
     return deleteDoc(putovanjeRef)
@@ -86,14 +88,18 @@ export class DataService {
     const trosakRef = collection(this.firestore, 'Troskovi');
     return addDoc(trosakRef, trosak);
   }
-  updateTroskovi(troskovi: Troskovi, updatedData: { BoravisnaTaksa: any, Izleti: any, Prevoz: any, Smestaj: any, VrstaPrevoza: any }) {
-    const troskoviRef = doc(this.firestore, `Troskovi/${troskovi}`);
-    return updateDoc(troskoviRef, {
-      BoravisnaTaksa: troskovi.BoravisnaTaksa,
-      Izleti: troskovi.Izleti,
-      Prevoz: troskovi.Prevoz,
-      Smestaj: troskovi.Smestaj,
-      VrstaPrevoza: troskovi.VrstaPrevoza
-    })
+  updateTroskovi(trosakId: string, updatedData: { BoravisnaTaksa: any, Izleti: any, Prevoz: any, Smestaj: any, VrstaPrevoza: any, tipTroska: any, doplata: any }) {
+    const troskoviRef = doc(this.firestore, `Troskovi/${trosakId}`);
+    return updateDoc(troskoviRef, updatedData);
+  }
+  deleteTroskovi(troskoviId: string) {
+    const troskoviRef = doc(this.firestore, `Troskovi/${troskoviId}`);
+    return deleteDoc(troskoviRef)
+      .then(() => {
+        console.log(`Troskovi sa ID-jem ${troskoviId} je uspešno obrisano.`);
+      })
+      .catch((error) => {
+        console.error(`Greška prilikom brisanja Troskova: ${error}`);
+      });
   }
 }
