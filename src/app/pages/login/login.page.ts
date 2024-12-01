@@ -12,7 +12,10 @@ import { AuthenticationService } from 'src/app/authentication.service';
 export class LoginPage implements OnInit {
   loginForm: FormGroup
 
-  constructor(public formBuilder: FormBuilder, public loadingCtrl: LoadingController, public authService: AuthenticationService, public router: Router) { }
+  constructor(public formBuilder: FormBuilder,
+    public loadingCtrl: LoadingController,
+    public authService: AuthenticationService,
+    public router: Router) { }
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
 

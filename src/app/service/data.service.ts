@@ -30,8 +30,8 @@ export interface Troskovi {
   Prevoz: number,
   Smestaj: number,
   VrstaPrevoza: string,
-  putovanje: string
-  , id: string,
+  putovanje: string,
+  id: string,
 
 }
 export interface DodatniTroskovi {
@@ -88,7 +88,10 @@ export class DataService {
     const trosakRef = collection(this.firestore, 'Troskovi');
     return addDoc(trosakRef, trosak);
   }
-  updateTroskovi(trosakId: string, updatedData: { BoravisnaTaksa: any, Izleti: any, Prevoz: any, Smestaj: any, VrstaPrevoza: any, tipTroska: any, doplata: any }) {
+  updateTroskovi(trosakId: string, updatedData: {
+    BoravisnaTaksa: any, Izleti: any, Prevoz: any, Smestaj: any, VrstaPrevoza: any,
+    tipTroska: any, doplata: any
+  }) {
     const troskoviRef = doc(this.firestore, `Troskovi/${trosakId}`);
     return updateDoc(troskoviRef, updatedData);
   }

@@ -80,7 +80,7 @@ export class HomePage implements OnInit, OnDestroy {
     this.dataService.getTrokoviById(podaciId).subscribe(async (troskovi: Troskovi) => {
       console.log("Troskovi", troskovi);
 
-      if (troskovi && podaciId != null && podaciId != '') {
+      if (troskovi && podaciId != null) {
         this.dataService.getPutovanjeById(troskovi.putovanje).subscribe(async (putovanje: Putovanje) => {
           if (putovanje) {
             console.log("putovanje:", putovanje);

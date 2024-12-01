@@ -16,9 +16,7 @@ export class AuthenticationService {
     return await signInWithEmailAndPassword(this.auth, email, password);
 
   }
-  async resetPassword(email: string) {
-    return await sendPasswordResetEmail(this.auth, email);
-  }
+
   async signOut() {
     return await signOut(this.auth);
   }
