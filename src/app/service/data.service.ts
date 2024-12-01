@@ -64,10 +64,6 @@ export class DataService {
     const putovanjeRef = collection(this.firestore, 'Putovanja');
     return collectionData(putovanjeRef, { idField: 'id' });
   }
-  addPutovanje(putovanje: Putovanje) {
-    const putovanjeRef = collection(this.firestore, 'Putovanja');
-    return addDoc(putovanjeRef, putovanje);
-  }
   updatePutovanje(putovanjeId: string, updatedData: { Destinacija: any; datumOd: any; datumDO: any; slika: any; }) {
     const putovanjeRef = doc(this.firestore, `Putovanja/${putovanjeId}`);
     return updateDoc(putovanjeRef, updatedData);
@@ -82,11 +78,6 @@ export class DataService {
       .catch((error) => {
         console.error(`Greška prilikom brisanja putovanja: ${error}`);
       });
-  }
-
-  addTrosak(trosak: Troskovi) {
-    const trosakRef = collection(this.firestore, 'Troskovi');
-    return addDoc(trosakRef, trosak);
   }
   updateTroskovi(trosakId: string, updatedData: {
     BoravisnaTaksa: any, Izleti: any, Prevoz: any, Smestaj: any, VrstaPrevoza: any,

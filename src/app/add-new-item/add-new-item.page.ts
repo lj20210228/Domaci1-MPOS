@@ -47,6 +47,7 @@ export class AddNewItemPage {
           role: 'confirm',
           handler: () => {
 
+
             addDoc(collection(this.firestore, 'Putovanja'), newItem)
               .then(() => {
                 console.log('Stavka uspešno dodata!');
